@@ -1,0 +1,10 @@
+*.P
+*.o
+*.cmake
+*.make
+*.pro
+*.user
+*~
+*.mp4
+*.png
+*.jpg
