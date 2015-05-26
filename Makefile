@@ -1,10 +1,14 @@
 TARGET1 = svm
 OUTPUT1 = bin/test_$(TARGET1)
 
-TARGET2 = nu_svm
+TARGET2 = rf
 OUTPUT2 = bin/test_$(TARGET2)
 
 CC = g++
+
+SHOGUN_INCLUDE = -I/home/chintaksheth/installed/shogun/include
+SHOGUN_LIB = -L/home/chintaksheth/installed/shogun/lib -lshogun
+DLIB_INCLUDE = -I/home/chintaksheth/installed/dlib-18.14/
 
 CFLAGS = -std=c++11 -c -ggdb -Wall -O3 -fopenmp -fpermissive -Wno-reorder -Wno-comment -Wno-unused-variable -Wno-unknown-pragmas
 LDFLAGS = -fopenmp
@@ -18,18 +22,19 @@ INCLUDE_DIRS = \
 	`pkg-config --cflags opencv` \
 	`pkg-config --cflags eigen3` \
 	-I./src \
-	-I./lib/dlib-18.14/
+	$(SHOGUN_INCLUDE) \
+	$(DLIB_INCLUDE)
 
 LIBS =  \
 	`pkg-config --libs opencv` \
 	`pkg-config --libs eigen3` \
+	$(SHOGUN_LIB) \
 	-ljpeg -lpng -lX11 -lpthread
-#	-L./lib/dlib-18.14/build/ -ldlib
 
-OBJECTS_COMMON = src/datahandler.o src/dataconverter.o \
-	src/svmtestsuite.o src/utils.o
-OBJECTS1 = src/main.o $(OBJECTS_COMMON)
-OBJECTS2 = src/test_fhog.o
+OBJECTS1 =  src/dlibSVM/svm_main.o \
+	    src/dlibSVM/datahandler.o \
+	    src/dlibSVM/svmtestsuite.o
+OBJECTS2 =  src/randomForest/main.o
 
 DEPS1 = $(OBJECTS1:%.o=%.P)
 DEPS2 = $(OBJECTS2:%.o=%.P)
